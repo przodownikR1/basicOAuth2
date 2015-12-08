@@ -36,4 +36,9 @@ public class SecurityController {
         return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
 
     }
+    
+    @RequestMapping("/userPrincipal")
+    public Principal user(Principal user) {
+        return user;
+    }
 }

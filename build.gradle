@@ -33,6 +33,7 @@ dependencies {
     compile('org.projectlombok:lombok')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile 'org.springframework.security.oauth:spring-security-oauth2:2.0.8.RELEASE'
     testCompile('org.springframework.boot:spring-boot-starter-test') 
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc:1.0.0.RELEASE')
 }
@@ -43,7 +44,23 @@ dependencyManagement {
 	}
 }
 
+configurations {
+    all*.exclude group: "commons-logging", module: "commons-logging"
+}
 
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.springframework') {
+            details.useVersion '4.2.3.RELEASE'
+        }
+        if (details.requested.group == 'org.springframework.security') {
+            details.useVersion '4.0.3.RELEASE'
+        }
+        if (details.requested.group == 'org.hibernate') {
+            details.useVersion '5.0.2.Final'
+        }
+    }
+}
 task wrapper(type: Wrapper) {
     gradleVersion = '2.7'
 }
